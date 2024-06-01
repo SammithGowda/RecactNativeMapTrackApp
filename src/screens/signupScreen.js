@@ -7,16 +7,13 @@ const SignupScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { state, signUp } = useContext(authContext)
-    const localFun = ()=>{
-    }
-    console.log("email,password",email)
     return (
         < View style={styles.container}>
             <Spacer>
                 <Text style={styles.heading}>Signup Screen</Text>
             </Spacer>
             <Input
-                onChange={setEmail}
+                onChangeText={setEmail}
                 value={email}
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -25,15 +22,16 @@ const SignupScreen = ({ navigation }) => {
             <Spacer />
             <Input
                 secureTextEntry
-                onChange={setPassword}
+                onChangeText={setPassword}
                 autoCapitalize="none"
                 autoCorrect={false}
                 value={password}
                 label="Password"
             />
+            <Text style={styles.errorStyle}>{state.errorMessage ? state.errorMessage : ""}</Text>
             <Button
                 title="Sign Up"
-                onPress={() => signUp({email:email,password:password})}
+                onPress={() => signUp({ email, password })}
             />
             <Spacer />
         </View>
@@ -55,6 +53,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         marginBottom: 30
+    },
+    errorStyle: {
+        color: "red",
+        fontSize: 16,
+        marginLeft: 10,
+        marginBottom: 10
     }
 });
 
