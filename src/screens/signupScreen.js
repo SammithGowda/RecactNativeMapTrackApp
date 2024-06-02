@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import React, { useContext } from "react";
+import { StyleSheet, View } from "react-native";
 import Spacer from "../component/spacer";
 import { Context as authContext } from "../context/authContext";
 import AuthForm from "../component/authForm";
@@ -7,10 +7,8 @@ import NavLink from "../component/navLink";
 import { NavigationEvents } from "react-navigation";
 const SignupScreen = ({ navigation }) => {
 
-    const { state, signUp, clearErrorMsg,localSignin } = useContext(authContext)
-    useEffect(() => {
-        localSignin()
-    }, [])
+    const { state, signUp, clearErrorMsg } = useContext(authContext)
+
     return (
         <View style={styles.container}>
             <NavigationEvents

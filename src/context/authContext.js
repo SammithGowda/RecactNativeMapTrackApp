@@ -10,9 +10,11 @@ const authReducer = (state, { type, payload }) => {
         case "add_error":
             return { ...state, errorMessage: payload };
         case "signin":
-            return { errorMessage: '', token: payload }
+            return { errorMessage: '', token: payload };
         case "clear_msg":
-            return { ...state, errorMessage: '' }
+            return { ...state, errorMessage: '' };
+        case "signout":
+            return { token: null, errorMessage: '' }
         default:
             return state;
     }
@@ -70,11 +72,12 @@ const signIn = (dispatch) => async ({ email, password }) => {
 
 
 
-const signOut = (dispatch) => {
-    return ({ email, password }) => {
-        //update state
-    }
+const signOut = (dispatch) => async () => {
+    await AsyncStroage.removeItem('token')
+    dispatch({ type: "signout" })
+    navigate("loginFlow")
 }
+
 
 export const { Context, Provider } = createDataContext(
     authReducer,
