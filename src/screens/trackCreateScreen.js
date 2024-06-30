@@ -1,36 +1,34 @@
-import "../_mockLocation"
-import React, { useEffect, useState, useContext } from "react";
+// import "../_mockLocation"
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import { StyleSheet } from "react-native";
 import { Text } from "react-native";
-import { SafeAreaView } from "react-navigation";
+import { SafeAreaView, withNavigationFocus } from "react-navigation";
 import Map from "../component/map";
 import { requestForegroundPermissionsAsync, watchPositionAsync, Accuracy } from "expo-location"
 import { Context as LocationContext } from "../context/locationContext";
-const TrackCreateScreen = () => {
-    const [err, setErr] = useState(null)
-    const { addLocation } = useContext(LocationContext)
-    const startWatching = async () => {
-        const { granted } = await requestForegroundPermissionsAsync();
-        if (!granted) setErr("Please allow location access...")
-        await watchPositionAsync({
-            accuracy: Accuracy.BestForNavigation,
-            timeInterval: 1000,
-            distanceInterval: 10,
-        }, (location) => {
-            // console.log(location);
-            addLocation(location); 
+import useLoaction from "../hooks/useLoaction";
+import TrackForm from "../component/trackForm";
+const TrackCreateScreen = ({ isFocused }) => {
+    const { addLocation, state } = useContext(LocationContext)
+    const callback = useCallback(location => {
+        addLocation(location, state.recording)
+    }, [state.recording]);
+    const [err] = useLoaction(isFocused || state.recording, callback)
 
-        })
-    }
-
-    useEffect(() => {
-        startWatching()
-    }, [])
+    //*********************************************************************************************************************** */
+    // below code the alternative logic against the udemy leacture video
+    //in import useLoaction from "../hooks/useLoaction"; component inside useEffect dependecy [] use recoding varibale from locationContext insted callback
+    //that is my logic im not sure write are wrong but it kinda works iduuno
+    // const [err] = useLoaction(isFocused, (location) => {
+    //     addLocation(location, state.recording)
+    // })
+    //*********************************************************************************************************************** */
 
     return (
         <SafeAreaView style={{ paddingTop: 30, fontWight: "bold" }}>
             <Text style={{ fontSize: 30, }}>Track Create Screen</Text>
             <Map />
+            <TrackForm />
             {err ? <Text>{err}</Text> : null}
         </SafeAreaView>
     )
@@ -38,4 +36,4 @@ const TrackCreateScreen = () => {
 
 const styles = StyleSheet.create({});
 
-export default TrackCreateScreen;
+export default withNavigationFocus(TrackCreateScreen);
