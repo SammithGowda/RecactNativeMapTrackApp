@@ -41,7 +41,9 @@ const signUp = (dispatch) => async ({ email, password }) => {
     //get tokena and update state
     //if error show error
     try {
+        console.log("hitted client api in context")
         const response = await trackerApi.post('/signup', { email, password });
+        console.log(`Printed response after signup api ${response}`)
         await AsyncStroage.setItem('token', JSON.stringify(response.data.token))
         dispatch({ type: 'signin', payload: response.data })
         navigate("TrackList");
@@ -59,13 +61,17 @@ const signIn = (dispatch) => async ({ email, password }) => {
     //if error show error
     try {
         //dispatch success 
+        console.log("sam","response");
+        
         const response = await trackerApi.post('/signin', { email, password });
+        console.log(response,"response");
         await AsyncStroage.setItem('token', JSON.stringify(response.data.token));
         dispatch({ type: "sigin", payload: response.data.token });
         navigate("TrackList");
 
     } catch (error) {
         //dispatch error
+        console.log(error,"signin")
         dispatch({ type: 'add_error', payload: "Opps Something went wrong Please check email and password !" })
     }
 }

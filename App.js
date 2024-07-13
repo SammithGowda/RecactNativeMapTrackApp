@@ -14,6 +14,16 @@ import { setNavigation } from "./src/navigationRoute";
 import { Provider as LocationProvider } from "./src/context/locationContext"
 import ResolveAuth from "./src/screens/resolveAuth";
 import { Provider as TrackProvider } from "./src/context/trackContext"
+import { Title } from "react-native-paper";
+import { Feather } from "@expo/vector-icons";
+const trackListFlow = createStackNavigator({
+  TrackList: TrackListScreen,
+  TrackDetails: TrackDeatilsScreen
+})
+trackListFlow.navigationOptions = {
+  title: "Tracks",
+  tabBarIcon:<Feather name="list" size={20}/>
+}
 const switchNavigator = createSwitchNavigator({
   resolveAuth: ResolveAuth,
   loginFlow: createStackNavigator({
@@ -21,10 +31,7 @@ const switchNavigator = createSwitchNavigator({
     Signin: SigninScreen
   }),
   mainFlow: createMaterialBottomTabNavigator({
-    trackListFlow: createStackNavigator({
-      TrackList: TrackListScreen,
-      TrackDetails: TrackDeatilsScreen
-    }),
+    trackListFlow,
     TrackCreate: TrackCreateScreen,
     Account: AccountScreen
   })

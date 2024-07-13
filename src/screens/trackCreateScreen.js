@@ -8,6 +8,7 @@ import { requestForegroundPermissionsAsync, watchPositionAsync, Accuracy } from 
 import { Context as LocationContext } from "../context/locationContext";
 import useLoaction from "../hooks/useLoaction";
 import TrackForm from "../component/trackForm";
+import {FontAwesome} from "@expo/vector-icons"
 const TrackCreateScreen = ({ isFocused }) => {
     const { addLocation, state } = useContext(LocationContext)
     const callback = useCallback(location => {
@@ -34,6 +35,10 @@ const TrackCreateScreen = ({ isFocused }) => {
     )
 }
 
+TrackCreateScreen.navigationOptions={
+    title:"Add Trcak",
+    tabBarIcon:<FontAwesome name="plus-circle" size={20} color={'black'}/>
+}
 const styles = StyleSheet.create({});
 
 export default withNavigationFocus(TrackCreateScreen);
